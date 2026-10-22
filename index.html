@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Student Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --h1: #1B2A49;
+            --hero: linear-gradient(160deg, #1B2A49 0%, #27476E 60%, #3A6A94 100%);
+            --sheet: #fff;
+            --ink: #14213D;
+            --muted: #6B7A90;
+            --field: #F1F4F8;
+            --accent: #2F5D8A;
+            --pink: #2F5D8A;
+            --glow: rgba(255, 255, 255, .28);
+            --cap: #161B26;
+            --cap2: #3A4660;
+            --scroll: #F6EBD3;
+            --scroll2: #DDC9A0;
+            --err: #C2334D;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --hero: linear-gradient(160deg, #0F1B33 0%, #1A3558 60%, #27547F 100%);
+                --h1: #0F1B33;
+                --sheet: #0F1724;
+                --ink: #EAF0F8;
+                --muted: #93A3BA;
+                --field: #1A2538;
+                --accent: #8DB4E0;
+                --pink: #8DB4E0;
+                --glow: rgba(255, 255, 255, .16);
+                --cap: #2A3347;
+                --cap2: #46557A;
+                --err: #FF8DA1
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --hero: linear-gradient(160deg, #0F1B33 0%, #1A3558 60%, #27547F 100%);
+            --h1: #0F1B33;
+            --sheet: #0F1724;
+            --ink: #EAF0F8;
+            --muted: #93A3BA;
+            --field: #1A2538;
+            --accent: #8DB4E0;
+            --pink: #8DB4E0;
+            --glow: rgba(255, 255, 255, .16);
+            --cap: #2A3347;
+            --cap2: #46557A;
+            --err: #FF8DA1
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        html {
+            height: 100%;
+            background: linear-gradient(var(--h1) 50%, var(--sheet) 50%)
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+            color: var(--ink);
+            font-family: "Montserrat", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .hero {
+            flex: 0 0 clamp(190px, 42dvh, 380px);
+            position: relative;
+            background: var(--hero);
+            overflow: hidden
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .12)
+        }
+
+        .hero::before {
+            width: 180px;
+            height: 180px;
+            left: -60px;
+            top: -50px
+        }
+
+        .hero::after {
+            width: 120px;
+            height: 120px;
+            right: -30px;
+            bottom: 30px
+        }
+
+        .art {
+            position: absolute;
+            z-index: 1;
+            inset: 14px 0 44px;
+            background: radial-gradient(closest-side, var(--glow), transparent 80%)
+        }
+
+        .art svg {
+            display: block;
+            width: 100%;
+            height: 100%
+        }
+
+        .sheet {
+            flex: 1;
+            min-height: 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 1;
+            background: var(--sheet);
+            border-radius: 32px 32px 0 0;
+            padding: clamp(18px, 3.4dvh, 30px) 24px clamp(12px, 2.4dvh, 22px);
+            box-shadow: 0 -12px 30px -14px rgba(10, 25, 50, .45);
+            animation: up .6s cubic-bezier(.2, .8, .2, 1) both
+        }
+
+        .inner {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            font-size: clamp(22px, 3.5dvh, 28px);
+            font-weight: 800;
+            letter-spacing: -.01em
+        }
+
+        .sub {
+            margin: 6px 0 clamp(12px, 2.6dvh, 22px);
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .field {
+            position: relative;
+            margin-bottom: clamp(8px, 1.6dvh, 12px)
+        }
+
+        .field input {
+            width: 100%;
+            height: clamp(44px, 7dvh, 56px);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            background: var(--field);
+            color: var(--ink);
+            font: inherit;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0 22px 0 52px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s
+        }
+
+        .field input::placeholder {
+            color: var(--muted);
+            opacity: 1
+        }
+
+        .field input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(47, 93, 138, .22)
+        }
+
+        .field.pw input {
+            padding-right: 76px
+        }
+
+        .field.bad input {
+            border-color: var(--err)
+        }
+
+        .field input:-webkit-autofill,
+        .field input:-webkit-autofill:hover,
+        .field input:-webkit-autofill:focus {
+            -webkit-text-fill-color: var(--ink);
+            -webkit-box-shadow: 0 0 0 1000px var(--field) inset;
+            box-shadow: 0 0 0 1000px var(--field) inset;
+            caret-color: var(--ink)
+        }
+
+        .ico {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 21px;
+            height: 21px;
+            color: var(--muted);
+            pointer-events: none;
+            transition: color .2s
+        }
+
+        .field:focus-within .ico {
+            color: var(--accent)
+        }
+
+        .eye {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: none;
+            color: var(--accent);
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px
+        }
+
+        .cta {
+            display: block;
+            width: 100%;
+            height: clamp(46px, 7.2dvh, 58px);
+            margin-top: clamp(4px, 1dvh, 8px);
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #1E3A5F, #2F5D8A 55%, #3F7AAE);
+            color: #fff;
+            font: inherit;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 12px 22px -10px rgba(30, 58, 95, .7);
+            transition: transform .15s, filter .2s
+        }
+
+        .cta:hover {
+            filter: brightness(1.06)
+        }
+
+        .cta:active {
+            transform: scale(.98)
+        }
+
+        .cta.load {
+            color: transparent;
+            position: relative;
+            pointer-events: none
+        }
+
+        .cta.load::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite
+        }
+
+        .fgt {
+            display: block;
+            margin: clamp(8px, 1.8dvh, 16px) auto 0;
+            border: 0;
+            background: none;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--pink);
+            cursor: pointer;
+            padding: 4px
+        }
+
+        .msg {
+            min-height: 20px;
+            margin: clamp(2px, .8dvh, 8px) 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--err)
+        }
+
+        .msg.ok {
+            color: var(--muted)
+        }
+
+        .reg {
+            margin: auto 0 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .reg button {
+            border: 0;
+            background: none;
+            font: inherit;
+            font-weight: 800;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 2px
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px
+        }
+
+        .cap {
+            animation: bob 4s ease-in-out infinite alternate
+        }
+
+        .tassel {
+            transform-box: view-box;
+            transform-origin: 222px 84px;
+            animation: sway 3s ease-in-out infinite alternate
+        }
+
+        .sp {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: tw 2.6s ease-in-out infinite
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(40px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @keyframes bob {
+            from {
+                transform: translateY(0)
+            }
+
+            to {
+                transform: translateY(-5px)
+            }
+        }
+
+        @keyframes sway {
+            from {
+                transform: rotate(-3deg)
+            }
+
+            to {
+                transform: rotate(3deg)
+            }
+        }
+
+        @keyframes tw {
+
+            0%,
+            100% {
+                opacity: .2;
+                transform: scale(.55)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @media (max-height:600px) {
+            .sub {
+                display: none
+            }
+
+            h1 {
+                margin-bottom: 12px
+            }
+
+            .hero {
+                flex-basis: 40dvh
+            }
+        }
+
+        @media (max-height:480px) {
+
+            html,
+            body {
+                height: auto;
+                min-height: 100%
+            }
+
+            body {
+                overflow: auto
+            }
+
+            .hero {
+                flex-basis: 200px
+            }
+
+            .sheet {
+                min-height: 380px
+            }
+        }
+
+        .tag {
+            display: none
+        }
+
+        @media (min-width:900px) {
+            body {
+                flex-direction: row
+            }
+
+            .hero {
+                flex: 0 0 52%;
+                height: 100%
+            }
+
+            .art {
+                inset: 7% 8% 27% 8%
+            }
+
+            .tag {
+                display: block;
+                position: absolute;
+                left: 8%;
+                right: 8%;
+                bottom: 8%;
+                z-index: 1;
+                color: #fff;
+                text-align: center
+            }
+
+            .tag h2 {
+                margin: 0 0 8px;
+                font-size: clamp(26px, 2.8vw, 40px);
+                font-weight: 800;
+                letter-spacing: -.01em;
+                line-height: 1.15
+            }
+
+            .tag p {
+                margin: 0;
+                font-size: clamp(14px, 1.2vw, 17px);
+                opacity: .88
+            }
+
+            .hero::before {
+                width: 320px;
+                height: 320px;
+                left: -110px;
+                top: -90px
+            }
+
+            .hero::after {
+                width: 220px;
+                height: 220px;
+                right: -60px;
+                bottom: -40px
+            }
+
+            .sheet {
+                flex: 1;
+                margin-top: 0;
+                border-radius: 0;
+                box-shadow: none;
+                animation: none;
+                display: grid;
+                place-items: center;
+                padding: 24px 40px
+            }
+
+            .inner {
+                height: auto;
+                max-width: 400px
+            }
+
+            h1 {
+                font-size: 34px
+            }
+
+            .sub {
+                display: block;
+                font-size: 16px;
+                margin-bottom: 26px
+            }
+
+            .field {
+                margin-bottom: 12px
+            }
+
+            .field input,
+            .cta {
+                height: 56px
+            }
+
+            .cta {
+                margin-top: 8px
+            }
+
+            .fgt {
+                margin-top: 16px
+            }
+
+            .reg {
+                margin-top: 24px
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 300 220" fill="none" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#F0D48A" />
+                        <stop offset="1" stop-color="#CFA24A" />
+                    </linearGradient>
+                    <linearGradient id="gt" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" style="stop-color:var(--cap2)" />
+                        <stop offset="1" style="stop-color:var(--cap)" />
+                    </linearGradient>
+                </defs>
+                <ellipse cx="150" cy="196" rx="96" ry="8" fill="#000" opacity=".14" />
+                <path class="sp" d="M30 33l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff" />
+                <path class="sp" style="animation-delay:-.8s" d="M270 22l2.4 6 6 2.4-6 2.4-2.4 6-2.4-6-6-2.4 6-2.4z"
+                    fill="#fff" />
+                <path class="sp" style="animation-delay:-1.6s" d="M262 146l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff" />
+                <g transform="rotate(24 100 125)">
+                    <rect x="38" y="106" width="128" height="34" rx="17" fill="var(--scroll)" />
+                    <circle cx="160" cy="123" r="19" fill="var(--scroll2)" />
+                    <circle cx="160" cy="123" r="10" fill="var(--scroll)" stroke="var(--scroll2)" stroke-width="3" />
+                </g>
+                <path d="M66 150l-10 26 14-8 6 14 6-30z" fill="#3A6A94" />
+                <circle cx="76" cy="138" r="17" fill="#A87B27" />
+                <circle cx="76" cy="138" r="11" fill="#E3B454" />
+                <circle cx="76" cy="138" r="6" stroke="#A87B27" stroke-width="1.5" fill="none" />
+                <g class="cap">
+                    <path d="M82 86v40c2 26 138 26 140 0V80l-70 22z" fill="var(--cap)" />
+                    <path d="M20 62v10l130 38 130-38V62L150 98z" fill="var(--cap)" />
+                    <path d="M20 62L150 40l130 22-130 36z" fill="url(#gt)" />
+                    <ellipse cx="150" cy="68" rx="8" ry="4.5" fill="url(#gc)" />
+                    <ellipse cx="148" cy="66.5" rx="3" ry="1.4" fill="#fff" fill-opacity=".6" />
+                    <g class="tassel">
+                        <path d="M150 68C190 66 216 72 222 84V148" stroke="#E8C46A" stroke-width="3"
+                            stroke-linecap="round" />
+                        <path d="M215 146h14l3 26h-20z" fill="#E8C46A" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="tag">
+            <h2>Your campus, one login away.</h2>
+            <p>Access classes, results and updates in one place.</p>
+        </div>
+    </header>
+
+    <main class="sheet">
+        <div class="inner">
+            <h1>Student Login</h1>
+            <p class="sub">Welcome back, sign in to continue.</p>
+
+            <div class="field"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="3" />
+                    <path d="M3 8l9 6 9-6" />
+                </svg><input id="email" type="email" placeholder="Edu Email ID" autocomplete="email"
+                    aria-label="Edu Email ID"></div>
+            <div class="field pw"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="5" y="11" width="14" height="10" rx="3" />
+                    <path d="M8 11V8a4 4 0 018 0v3" />
+                </svg><input id="pw" type="password" placeholder="Password" autocomplete="current-password"
+                    aria-label="Password"><button class="eye" id="eye" type="button">Show</button></div>
+
+            <button class="cta" id="go" type="button">Log In</button>
+            <button class="fgt" id="fgt" type="button">Forgot Password?</button>
+            <div class="msg" id="msg" role="status" aria-live="polite"></div>
+            <p class="reg">New student? <button id="reg" type="button">Create account</button></p>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            var $ = function (i) {return document.getElementById(i)};
+            function say(t, ok) {var m = $("msg"); m.textContent = t || ""; m.className = "msg" + (ok ? " ok" : "")}
+            function bad(a) {["email", "pw"].forEach(function (i) {$(i).parentNode.classList.toggle("bad", a.indexOf(i) > -1)})}
+            $("eye").addEventListener("click", function () {var p = $("pw"), h = p.type === "password"; p.type = h ? "text" : "password"; this.textContent = h ? "Hide" : "Show"});
+            $("fgt").addEventListener("click", function () {say("Enter your email and we'll send a reset link.", true)});
+            $("reg").addEventListener("click", function () {say("Registration is not connected yet. (Demo only)", true)});
+            $("go").addEventListener("click", function () {
+                var e = [];
+                if (!/^\S+@\S+\.\S+$/.test($("email").value.trim())) e.push("email");
+                if ($("pw").value.length < 6) e.push("pw");
+                bad(e);
+                if (e.length) {say(e[0] === "email" ? "Enter a valid email address." : "Password needs at least 6 characters."); return }
+                var b = $("go"); b.classList.add("load"); say("");
+                setTimeout(function () {b.classList.remove("load"); b.textContent = "Logged in \u2713"; say("Welcome back! (Demo only)", true); setTimeout(function () {b.textContent = "Log In"}, 2400)}, 1100);
+            });
+            document.addEventListener("keydown", function (e) {if (e.key === "Enter" && e.target.tagName === "INPUT") $("go").click()});
+        })();
+    </script>
+</body>
+
+</html>
